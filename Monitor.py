@@ -3,7 +3,6 @@ import ARPTools as arp
 import tkinter as tk
 versionNUM = '0.1'
 CPUName = arp.systemStatus()['CPUName']
-cpuRate = ''
 drives = []
 processes = []
 processDict = {}
@@ -56,7 +55,7 @@ def checkSystem():
     for process in update['processes']:
         processDict[process] = True
     processCount.set(f"{str(update['processNum'])} processes running")
-    cpuRate = update['cpuRate']
+    cpuRate.set(f"CPU load: {update['CPUload']}")
     main.after(1500, checkSystem)
 
 
@@ -64,12 +63,13 @@ main = tk.Tk()
 main.title(f'Rio system monitor {versionNUM}')
 processCount = tk.StringVar()
 driveCount = tk.IntVar()
+cpuRate = tk.StringVar()
 checkSystem()
 cpuFrame = tk.Frame(main)
 cpuFrame.pack()
 cpuLabel = tk.Label(cpuFrame, text=CPUName, bg=colors['CPU'])
 cpuLabel.pack()
-cpuRateLabel = tk.Label(cpuFrame, text=f"CPU load: {cpuRate}")
+cpuRateLabel = tk.Label(cpuFrame, textvariable=cpuRate)
 cpuRateLabel.pack()
 
 processFrame = tk.Frame(main)
