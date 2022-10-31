@@ -13,6 +13,7 @@ def systemStatus() -> dict:
     import platform
 
     CPU = platform.processor()
+    cpuRate = psutil.cpu_percent()
     processes = psutil.process_iter()
     processNum = len(psutil.pids())
     processList = []
@@ -25,13 +26,14 @@ def systemStatus() -> dict:
             ...
     for process in processes:
         processList.append(process.name())
-    CPUloadAvg = psutil.getloadavg()[1]
+    CPUloadAvg = psutil.getloadavg()[0]
     answer = {}
     answer['processNum'] = processNum
     answer['processes'] = processList
     answer['CPUName'] = CPU
     answer['CPUloadAvg'] = CPUloadAvg
     answer['disks'] = disks
+    answer['cpuRate'] = cpuRate
 
     return answer
 
