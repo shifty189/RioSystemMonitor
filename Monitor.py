@@ -3,6 +3,7 @@ import ARPTools as arp
 import tkinter as tk
 versionNUM = '0.1'
 CPUName = arp.systemStatus()['CPUName']
+cpuRate = ''
 drives = []
 processes = []
 processDict = {}
@@ -36,6 +37,7 @@ def showAllProcess():
 
 def checkSystem():
     global CPUName
+    global cpuRate
     global processCount
     global processes
     global driveCount
@@ -54,7 +56,8 @@ def checkSystem():
     for process in update['processes']:
         processDict[process] = True
     processCount.set(f"{str(update['processNum'])} processes running")
-    main.after(1000, checkSystem)
+    cpuRate = update['cpuRate']
+    main.after(1500, checkSystem)
 
 
 main = tk.Tk()
@@ -66,6 +69,8 @@ cpuFrame = tk.Frame(main)
 cpuFrame.pack()
 cpuLabel = tk.Label(cpuFrame, text=CPUName, bg=colors['CPU'])
 cpuLabel.pack()
+cpuRateLabel = tk.Label(cpuFrame, text=f"CPU load: {cpuRate}")
+cpuRateLabel.pack()
 
 processFrame = tk.Frame(main)
 processFrame.pack()
@@ -80,5 +85,4 @@ driveUsedSpace = []
 for i, drive in enumerate(drives):
     driveLabels.append(tk.Label(main, text=drives[i], bg=colors['Drive']).pack())
 
-main.after(50, checkSystem)
 main.mainloop()
