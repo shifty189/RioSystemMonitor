@@ -3,8 +3,7 @@ import ARPTools as arp
 import tkinter as tk
 from tkinter import messagebox
 import psutil
-from icecream import ic
-versionNUM = '0.3'
+versionNUM = '0.4'
 CPUName = arp.systemStatus()['CPUName']
 drives = []
 processes = []
