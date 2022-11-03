@@ -1,4 +1,3 @@
-from icecream import ic
 import ARPTools as arp
 import tkinter as tk
 from tkinter import messagebox
