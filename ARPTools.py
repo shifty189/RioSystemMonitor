@@ -5,7 +5,18 @@ arp takes no arguments, and provides the arp tables from the computer its run on
 
 myPing takes and IP address as a string, and optionaly 'y' or 'n' for verbose mode. 'y' as default
 """
+import math
 version_Num = '0.06'
+
+
+def convert_size(size_bytes: int) -> str:
+   if size_bytes == 0:
+       return "0B"
+   size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+   i = int(math.floor(math.log(size_bytes, 1024)))
+   p = math.pow(1024, i)
+   s = round(size_bytes / p, 2)
+   return "%s %s" % (s, size_name[i])
 
 
 def systemStatus() -> dict:
@@ -34,7 +45,6 @@ def systemStatus() -> dict:
     answer['CPUload'] = CPUload
     answer['disks'] = disks
     answer['cpuRate'] = cpuRate
-
     return answer
 
 
@@ -187,5 +197,3 @@ def vendorLookup(usermac: str) -> str:
         return tempMacs[usermac]
     except KeyError:
         return f"Unknown Vendor {usermac[0:2]}:{usermac[2:4]}:{usermac[4:]}"
-
-
