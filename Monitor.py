@@ -1,8 +1,10 @@
+from icecream import ic
 import ARPTools as arp
 import tkinter as tk
 from tkinter import messagebox
 import psutil
-versionNUM = '0.4'
+from icecream import ic
+versionNUM = '0.5'
 CPUName = arp.systemStatus()['CPUName']
 drives = []
 processes = []
@@ -65,8 +67,6 @@ def showAllProcess():
     killProcess.pack()
 
 
-
-
 def checkSystem():
     global CPUName
     global cpuRate
@@ -75,6 +75,9 @@ def checkSystem():
     global driveCount
     global drives
     global processDict
+    global availableRAM
+    global totalRAM
+    global percentRAM
 
     update = arp.systemStatus()
     count = 0
@@ -89,6 +92,11 @@ def checkSystem():
         processDict[process] = True
     processCount.set(f"{str(update['processNum'])} processes running")
     cpuRate.set(f"CPU load: {update['CPUload']}")
+    totalRAM.set(f'Total RAM: {update["totalRam"]}')
+    percentTEMP = float(update["freeRam"][:4]) / float(update["totalRam"][:4])
+    percentTEMP = round(percentTEMP * 100, 2)
+    percentRAM.set(f'({percentTEMP}%)')
+    availableRAM.set(f'Available RAM: {update["freeRam"]} {percentRAM.get()}')
     main.after(1000, checkSystem)
 
 
@@ -97,6 +105,9 @@ main.title(f'Rio system monitor {versionNUM}')
 processCount = tk.StringVar()
 driveCount = tk.IntVar()
 cpuRate = tk.StringVar()
+availableRAM = tk.StringVar()
+totalRAM = tk.StringVar()
+percentRAM = tk.StringVar()
 checkSystem()
 cpuFrame = tk.Frame(main)
 cpuFrame.pack()
@@ -105,12 +116,21 @@ cpuLabel.pack()
 cpuRateLabel = tk.Label(cpuFrame, textvariable=cpuRate)
 cpuRateLabel.pack()
 
+
 processFrame = tk.Frame(main)
 processFrame.pack()
 processLabel = tk.Label(processFrame, textvariable=processCount)
 processLabel.pack()
 processShowButton = tk.Button(processFrame, text='show all process', command=showAllProcess)
 processShowButton.pack()
+
+RAMFrame = tk.Frame(main)
+RAMFrame.pack()
+availableRamLabel = tk.Label(RAMFrame, textvariable=availableRAM)
+availableRamLabel.pack()
+totalRamLabel = tk.Label(RAMFrame, textvariable=totalRAM)
+totalRamLabel.pack()
+
 
 driveFrame = tk.Frame(main)
 driveLabels = []
