@@ -6,7 +6,7 @@ arp takes no arguments, and provides the arp tables from the computer its run on
 myPing takes and IP address as a string, and optionaly 'y' or 'n' for verbose mode. 'y' as default
 """
 import math
-version_Num = '0.06'
+version_Num = '0.08'
 
 
 def convert_size(size_bytes: int) -> str:
@@ -38,6 +38,7 @@ def systemStatus() -> dict:
     for process in processes:
         processList.append(process.name())
     CPUload = psutil.cpu_percent(interval=1)
+    tempmemory = psutil.virtual_memory()
     answer = {}
     answer['processNum'] = processNum
     answer['processes'] = processList
@@ -45,6 +46,8 @@ def systemStatus() -> dict:
     answer['CPUload'] = CPUload
     answer['disks'] = disks
     answer['cpuRate'] = cpuRate
+    answer['freeRam'] = convert_size(tempmemory.available)
+    answer['totalRam'] = convert_size(tempmemory.total)
     return answer
 
 
